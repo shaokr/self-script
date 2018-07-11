@@ -1,15 +1,11 @@
 // 偷懒复制专用
-// const Git = require("nodegit");
-const path = require("path");
-// const git = require("gulp-git");
-const fs = require("fs-extra");
-const rimraf = require("rimraf");
-const colors = require("colors");
+const path = require('path');
+const fs = require('fs-extra');
 
-const _ = require("lodash");
-const fp = require("lodash/fp");
-const glob = require("glob");
-const copyGoConfig = require("./copy-go-config");
+const _ = require('lodash');
+const fp = require('lodash/fp');
+const glob = require('glob');
+const copyGoConfig = require('./copy-go-config');
 
 let { sep } = path;
 /**
@@ -28,89 +24,89 @@ interface ConfigObj {
   upConfigVersion?: object; // 需要修改的 config 配置模块
 }
 interface Config {
-  "api-util": ConfigObj;
-  "cc-sdk": ConfigObj;
-  "debug-tool": ConfigObj;
-  "react-component": ConfigObj;
-  "fed-const": ConfigObj;
-  "bridge-ws": ConfigObj;
-  "auto-login": ConfigObj;
-  "slate-plugins-at": ConfigObj;
+  'api-util': ConfigObj;
+  'cc-sdk': ConfigObj;
+  'debug-tool': ConfigObj;
+  'react-component': ConfigObj;
+  'fed-const': ConfigObj;
+  'bridge-ws': ConfigObj;
+  'auto-login': ConfigObj;
+  'slate-plugins-at': ConfigObj;
 }
 let config: Config = {
-  "api-util": {
-    to: ["../release/js/api-util"],
-    globFile: "**/dist/{min,}/*.js",
+  'api-util': {
+    to: ['../release/js/api-util'],
+    globFile: '**/dist/{min,}/*.js',
     exclude: [/config/],
     upConfigVersion: {
-      "~1.1.0": ["^1.0.0", "^2.0.0"]
+      '~1.1.0': ['^1.0.0', '^2.0.0']
     }
   },
 
-  "cc-sdk": {
+  'cc-sdk': {
     // go: 'E:/kook/kook-web-fed/cc-sdk',
-    to: ["../release/js/cc-sdk"],
-    globFile: "dist/{min,}/cc{.js,.min.js}",
+    to: ['../release/js/cc-sdk'],
+    globFile: 'dist/{min,}/cc{.js,.min.js}',
     exclude: [/config/, /main/],
     upConfigVersion: {
-      "~1.1.3": ["^1.0.0", "^2.0.0"]
+      '~1.1.3': ['^1.0.0', '^2.0.0']
     }
   },
-  "debug-tool": {
+  'debug-tool': {
     // go: 'E:/kook/kook-web-fed/debug-tool',
     to: [`../release/js/debug-tool`],
-    globFile: "dist/{min,}/*.{js,css}",
+    globFile: 'dist/{min,}/*.{js,css}',
     exclude: [/config/, /main/],
     upConfigVersion: {
-      "~1.0.0": ["~1.0.0", "~2.0.0"]
+      '~1.0.0': ['~1.0.0', '~2.0.0']
     }
   },
 
-  "react-component": {
+  'react-component': {
     // go: 'E:/kook/kook-web-fed/react-component',
     to: [`../release/js/react-component-zy`],
-    globFile: "dist/{min,}/*.{js,css}",
+    globFile: 'dist/{min,}/*.{js,css}',
     exclude: [/config/, /main/],
     upConfigVersion: {
-      "0.0.2": ["1.0.6"],
-      "1.0.6": ["2.1.0", "2.1.1"],
-      "~1.1.0": ["2.1.2", '~2.2.0', '~2.3.0']
+      '0.0.2': ['1.0.6'],
+      '1.0.6': ['2.1.0', '2.1.1'],
+      '~1.1.0': ['2.1.2', '~2.2.0', '~2.3.0']
     }
   },
 
-  "fed-const": {
+  'fed-const': {
     // go: 'E:/kook/kook-web-fed/fed-const/',
-    to: ["../release/js/fed-const"],
-    globFile: "dist/{min,}/*.js",
+    to: ['../release/js/fed-const'],
+    globFile: 'dist/{min,}/*.js',
     exclude: [/config/],
     upConfigVersion: {
-      "~1.0.0": ["~1.0.0", "^2.0.0"]
+      '~1.0.0': ['~1.0.0', '^2.0.0']
     }
   },
 
-  "bridge-ws": {
+  'bridge-ws': {
     // go: 'E:/kook/kook-web-fed/web-bridge-ws',
-    to: ["../release/js/bridge-ws"],
-    globFile: "dist/{min,}/bridge{.js,.min.js}",
+    to: ['../release/js/bridge-ws'],
+    globFile: 'dist/{min,}/bridge{.js,.min.js}',
     exclude: [/config/, /main/],
     upConfigVersion: {
-      "1.0.8": ["2.1.0"],
-      "1.0.9": ["2.1.1"],
-      "~1.1.0": ["2.1.1"],
-      "~1.2.0": ["2.1.2", "~2.2.0", "~2.3.0"]
+      '1.0.8': ['2.1.0'],
+      '1.0.9': ['2.1.1'],
+      '~1.1.0': ['2.1.1'],
+      '~1.2.0': ['2.1.2', '~2.2.0', '~2.3.0']
     }
   },
-  "auto-login": {
+  'auto-login': {
     // go: 'E:/kook/kook-web-fed/auto-login',
-    to: ["../release/js/auto-login"],
-    globFile: "dist/{min,}/index{.js,.min.js}",
+    to: ['../release/js/auto-login'],
+    globFile: 'dist/{min,}/index{.js,.min.js}',
     exclude: [/config/, /main/],
     upConfigVersion: {}
   },
-  "slate-plugins-at": {
+  'slate-plugins-at': {
     // go: 'E:/kook/kook-web-fed/slate-plugins-at/',
-    to: ["../release/js/slate-plugins-at"],
-    globFile: "dist/{min,}/*.js",
+    to: ['../release/js/slate-plugins-at'],
+    globFile: 'dist/{min,}/*.js',
     exclude: [/config/],
     upConfigVersion: {
       // '0.0.1': ['^1.0.0', '^2.0.0']
@@ -145,8 +141,8 @@ const fileArrC = async (val: string, fileArr: Array<any>, index: number) => {
   }
   return true;
 };
-const isSmallVersion = fp.startsWith("~"); // 是否小版本
-const isLargeVersion = fp.startsWith("^"); // 是否大版本
+const isSmallVersion = fp.startsWith('~'); // 是否小版本
+const isLargeVersion = fp.startsWith('^'); // 是否大版本
 /**
  * 查询toVersion是否属于 version 的版本规则
  */
@@ -166,7 +162,7 @@ function getVersionInfo(version: string): GetVersionInfoRes {
     if (small || large) {
       version = version.slice(1);
     }
-    const versionArr = _.split(version, ".");
+    const versionArr = _.split(version, '.');
     getVersionInfoCache.set(version, {
       small,
       large,
@@ -200,7 +196,7 @@ function getVersionInfo(version: string): GetVersionInfoRes {
   return getVersionInfoCache.get(version);
 }
 
-const configDirList = fs.readdirSync("../release/config");
+const configDirList = fs.readdirSync('../release/config');
 // 修改配置
 const configTxtAll = {};
 function upConfig(to?: string, version?: string, upConfigVersion?: object) {
@@ -226,22 +222,22 @@ function upConfig(to?: string, version?: string, upConfigVersion?: object) {
       return false;
     }
   });
-  console.log("修改配置组:"["red"], JSON.stringify(list));
+  console.log('修改配置组:'['red'], JSON.stringify(list));
   _.forEach(list, configVersion => {
     const _path = `../release/config/${configVersion}/config.js`;
 
     let textObj = fp.getOr({
-      text: fs.readFileSync(_path, "utf-8"),
+      text: fs.readFileSync(_path, 'utf-8'),
       path: _path
     })(configVersion)(configTxtAll);
 
-    const [, project = "", version = ""] =
+    const [, project = '', version = ''] =
       to[0].match(/release\\(.+)\\([0-9\.]+)/) || [];
 
-    const _project = project.replace("\\", "/");
+    const _project = project.replace('\\', '/');
 
     textObj.text = textObj.text.replace(
-      new RegExp(`${_project}/[0-9\\.]+/([^?'"]+)(\\?([0-9]+))?`, "g"),
+      new RegExp(`${_project}/[0-9\\.]+/([^?'"]+)(\\?([0-9]+))?`, 'g'),
       `${_project}/${version}/$1?${+new Date()}`
     );
     _.set(configTxtAll, [configVersion], textObj);
@@ -257,7 +253,7 @@ const Go = async (data: ConfigArr) => {
   );
   console.log(`版本:${_package.version}`);
   // return;
-  const upConfigVersion = fp.get(["upConfigVersion"])(data);
+  const upConfigVersion = fp.get(['upConfigVersion'])(data);
   // if(upConfigVersion) {
   //   fp.forEach((item) => upConfig(item, toPath[0]))(upConfigVersion);
   // }
@@ -266,7 +262,7 @@ const Go = async (data: ConfigArr) => {
   let fileArr = glob.sync(`${goPathDist}/${data.globFile}`);
 
   fileArr = fp.map(val => {
-    let name = val.split("/");
+    let name = val.split('/');
     name = name[name.length - 1];
 
     return {
@@ -276,7 +272,7 @@ const Go = async (data: ConfigArr) => {
     };
   })(fileArr);
 
-  console.log(`以下文件:`["red"]);
+  console.log(`以下文件:`['red']);
   let i = 0;
   for (const val of toPath) {
     /**
@@ -292,7 +288,7 @@ const Go = async (data: ConfigArr) => {
     await fileArrC(val, fileArr, i);
     i++;
     // let text = fs.readFileSync(`../release/config/${val}/config.js`,'utf-8');
-    console.log(`=>复制到目录:(${val})`["red"]);
+    console.log(`=>复制到目录:(${val})`['red']);
   }
   return toPath;
 };
@@ -302,14 +298,15 @@ const Go = async (data: ConfigArr) => {
     console.log(
       `------------------项目(${
         val.go
-      })---------------------------------------`["green"]
+      })---------------------------------------`['green']
     );
     await Go(val);
     console.log(
       `------------------结束--------------------------------------------------\n`[
-        "green"
+        'green'
       ]
     );
   }
   upConfig();
 })();
+export {};

@@ -1,5 +1,6 @@
 const fp = require('lodash/fp');
 const fs = require('fs-extra');
+
 const enStr = fs.readFileSync(`${__dirname}/en.js`, 'utf-8');
 const zhStr = fs.readFileSync(`${__dirname}/zh.js`, 'utf-8');
 
@@ -19,7 +20,9 @@ fp.flow([
   fp.max,
   fp.range(0),
   fp.map(index => {
-    if (listEn[index] !== listZh[index]) list.push([index, listEn[index], listZh[index]]);
+    if (listEn[index] !== listZh[index])
+      list.push([index, listEn[index], listZh[index]]);
   })
 ])(fp.size(listEn), fp.size(listZh));
 console.log(list);
+export {};
