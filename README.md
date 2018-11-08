@@ -6,6 +6,8 @@
 
 > delete: 删除多余的本地项目文件
 
+> delete-config-proposal: 输出当前项目正在使用的config版本等
+
 ## env
 判断环境然后使用相对应的地址
 
